@@ -5,7 +5,6 @@ import { Task, CreateTaskData } from '../types/Task';
 const USERS_KEY = 'task_manager_users';
 const TASKS_KEY = 'task_manager_tasks';
 
-// Simulate network delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const mockApi = {

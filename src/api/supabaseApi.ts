@@ -115,7 +115,6 @@ export const supabaseApi = {
       throw fetchError;
     }
     
-    // Toggle the completion status
     const { data, error } = await supabase
       .from('tasks')
       .update({ completed: !currentTask.completed })
