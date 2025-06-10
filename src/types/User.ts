@@ -2,10 +2,9 @@
 import { Task } from './Task';
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  created_at: string;
 }
 
 export interface UserWithTasks extends User {

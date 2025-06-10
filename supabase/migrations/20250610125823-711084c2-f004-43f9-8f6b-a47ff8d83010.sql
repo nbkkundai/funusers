@@ -1,5 +1,4 @@
 
--- Create users table
 CREATE TABLE public.users (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE public.users (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
--- Create tasks table
 CREATE TABLE public.tasks (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
@@ -17,11 +15,9 @@ CREATE TABLE public.tasks (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
--- Enable Row Level Security (RLS)
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
 
--- Create policies to allow public access (since we don't have authentication yet)
 CREATE POLICY "Allow public access to users" ON public.users
   FOR ALL USING (true);
 

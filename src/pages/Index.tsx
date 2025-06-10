@@ -1,13 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import { UserWithTaskCount, UserWithTasks } from '../types/User';
-import { Task } from '../types/Task';
 import { UserCard } from '../components/UserCard';
 import { TaskCard } from '../components/TaskCard';
 import { CreateUserForm } from '../components/CreateUserForm';
 import { CreateTaskForm } from '../components/CreateTaskForm';
 import { Users, Plus, ArrowLeft } from 'lucide-react';
-import { supabaseApi } from '../api/supabaseApi';
+import { apiClient } from '../api/apiClient';
 
 const Index = () => {
   const [users, setUsers] = useState<UserWithTaskCount[]>([]);
@@ -23,7 +22,7 @@ const Index = () => {
   const loadUsers = async () => {
     setLoading(true);
     try {
-      const usersData = await supabaseApi.getUsersWithTaskCounts();
+      const usersData = await apiClient.getUsersWithTaskCounts();
       setUsers(usersData);
     } catch (error) {
       console.error('Failed to load users:', error);
@@ -34,8 +33,8 @@ const Index = () => {
 
   const handleCreateUser = async (userData: { name: string; email: string }) => {
     try {
-      await supabaseApi.createUser(userData);
-      await loadUsers(); // Reload users to get updated task counts
+      await apiClient.createUser(userData);
+      await loadUsers();
       setShowCreateUser(false);
     } catch (error) {
       console.error('Failed to create user:', error);
@@ -45,7 +44,7 @@ const Index = () => {
   const handleSelectUser = async (user: UserWithTaskCount) => {
     setLoading(true);
     try {
-      const tasks = await supabaseApi.getUserTasks(user.id);
+      const tasks = await apiClient.getUserTasks(user.id);
       setSelectedUser({ ...user, tasks });
     } catch (error) {
       console.error('Failed to load user tasks:', error);
@@ -58,7 +57,7 @@ const Index = () => {
     if (!selectedUser) return;
     
     try {
-      const newTask = await supabaseApi.createTask(selectedUser.id, taskData);
+      const newTask = await apiClient.createTask(selectedUser.id, taskData);
       setSelectedUser(prev => prev ? {
         ...prev,
         tasks: [newTask, ...prev.tasks]
@@ -73,7 +72,7 @@ const Index = () => {
     if (!selectedUser) return;
     
     try {
-      const tasks = await supabaseApi.getUserTasks(selectedUser.id);
+      const tasks = await apiClient.getUserTasks(selectedUser.id);
       setSelectedUser(prev => prev ? { ...prev, tasks } : null);
     } catch (error) {
       console.error('Failed to refresh tasks:', error);

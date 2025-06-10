@@ -1,7 +1,7 @@
 
 import { Task } from '../types/Task';
 import { CheckCircle, Circle, Clock } from 'lucide-react';
-import { supabaseApi } from '../api/supabaseApi';
+import { apiClient } from '../integrations/client.ts';
 
 interface TaskCardProps {
   task: Task;
@@ -12,7 +12,7 @@ export const TaskCard = ({ task, onTaskUpdated }: TaskCardProps) => {
   const handleToggleCompletion = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await supabaseApi.toggleTaskCompletion(task.id);
+      await apiClient.toggleTaskCompletion(task.id);
       if (onTaskUpdated) {
         onTaskUpdated();
       }
